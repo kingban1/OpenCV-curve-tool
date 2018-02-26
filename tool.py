@@ -76,18 +76,18 @@ def done():
 
 # Setup user interface
 cv2.namedWindow('Curve Tool')
+cv2.namedWindow('Video')
 cv2.createTrackbar('Delta', 'Curve Tool', 0, 50, nothing)
 cv2.createTrackbar('Brighten', 'Curve Tool', 0, 1, nothing)
 cv2.createTrackbar('Darken', 'Curve Tool', 0, 1, nothing)
 cv2.createTrackbar('Apply settings', 'Curve Tool', 0, 1, edit)
 cv2.createTrackbar('Histogram', 'Curve Tool', 0, 1, plot)
 cv2.createTrackbar('Save', 'Curve Tool', 0 ,1 ,nothing)
-cv2.createTrackbar('Close', 'Curve Tool', 0 ,1 ,nothing)
 
 # The program loop
-while(cv2.getTrackbarPos('Close','Curve Tool') == 0):
+while(True):
     if(ret == True):
-        cv2.imshow('Curve Tool', frame)
+        cv2.imshow('Video', frame)
     k = cv2.waitKey(1) & 0xFF
     if k == 27:
         break
@@ -100,7 +100,12 @@ while(cv2.getTrackbarPos('Close','Curve Tool') == 0):
                 frame = darken(frame, (-1)*totalDelta)
             out.write(frame)
             ret, frame = cap.read()
+            k = cv2.waitKey(1) & 0xFF
+            if k == 27:
+                break
             if(ret == True):
-                cv2.imshow('Curve Tool', frame)
+                cv2.imshow('Video', frame)
             else:
                 done()
+
+cv2.destroyAllWindows()
